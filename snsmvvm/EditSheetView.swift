@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct EditSheetView: View {
-    @ObservedObject var viewModel = PostViewModel() //新規作成(StateObject)       外から受け取る(ObservedObject)
     @Environment(\.dismiss) private var dismiss
+    @Binding var viewModel: PostViewModel
     let post: Post
     
     var body : some View {
