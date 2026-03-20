@@ -8,34 +8,44 @@
 import SwiftUI
 
 struct SendMessageView: View {
+    @ObservedObject var viewModel = PostViewModel() //新規作成(StateObject)       外から受け取る(ObservedObject)
     @Environment(\.dismiss) private var dismiss
-    @Binding private var post: [Post]
-    @Binding private var CoffeeName: String
-    @Binding private var content: String
-    init(post: Binding<[Post]>,CoffeeName:Binding<String>,content: Binding<String>) {
-        self._post = post
-        self._CoffeeName = CoffeeName
-        self._content = content
-    }
-
+//    @State private var rating: Int = 0
+    
     var body: some View {
         NavigationStack {
-            VStack{
-                TextField("国名", text: $CoffeeName)
-                TextEditor(text: $content)
-                Button {
-                    guard content.isEmpty == false else { return }
-                    post.append(Post(user: "Anonymous",CoffeeName: CoffeeName,content: content, createdAt: Date()))
-                    content = ""
-                    dismiss()
-                } label: {
-                    Image(systemName : "paperplane")
+            Form{
+                TextField("国名", text: $viewModel.coffeeName)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(12)
+                TextField("感想", text: $viewModel.content, axis: .vertical)
+                    .lineLimit(3)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(12)
+//                HStack{
+//                    Text("評価：")
+//                        .font(.headline)
+//                    StarRatingView(rating: $rating)
+//                }
+                .padding(12)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                       viewModel.addPost()
+                       dismiss()
+                    } label: {
+                        Text("投稿")
+                    }
+                    .padding(12)
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("キャンセル") {
+                        dismiss()
+                    }
                 }
             }
-            .padding(.vertical, 24)
-            .padding(.horizontal, 12)
-            .navigationTitle("投稿")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
+

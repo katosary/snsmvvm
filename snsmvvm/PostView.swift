@@ -11,24 +11,44 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var viewModel = PostViewModel()    
+    @StateObject var viewModel = PostViewModel()
     
     var body: some View {
         NavigationStack{
             ZStack(alignment: .bottomTrailing){
                 ScrollView{
                     LazyVStack{
-                        ForEach(viewModel.post) {post in
+                        ForEach(viewModel.posts) {post in
                             VStack{
                                 HStack{
                                     Text(post.user)
                                         .frame(maxWidth: 150 , alignment: .leading)
-                                    Text(post.createdAt, format: .dateTime .hour().minute())
-                                        .frame(maxWidth: 150 ,alignment: .trailing)
+                                    Text(post.createdAt,style:.date)
+                                        .frame(maxWidth: 150 , alignment: .trailing)
+                                    Menu {
+                                        // 編集ボタン
+                                        Button {
+                                            
+                                            viewModel.isEditSheet = true
+                                        } label: {
+                                            Label("編集", systemImage: "pencil")
+                                        }
+                                        
+                                        // 削除ボタン
+                                        Button {
+                                            viewModel.deletePost(targetPost: post)
+                                        } label: {
+                                            Label("削除", systemImage: "trash")
+                                                .padding(8)
+                                                .foregroundColor(.secondary)
+                                        }
+                                    } label: {
+                                        Image(systemName: "ellipsis")
+                                    }
                                 }
                                 HStack{
                                     Text("国名：")
-                                    Text(post.CoffeeName)
+                                    Text(post.coffeeName)
                                 }
                                 .frame(maxWidth: 300,alignment: .leading)
                                 HStack{
@@ -40,10 +60,14 @@ struct ContentView: View {
                             .padding(20)
                             .background(Color.white)
                             .cornerRadius(10)
+                            .sheet(isPresented: $viewModel.isEditSheet){
+                                EditSheetView(viewModel : viewModel,post:post)
+                                
+                            }
+
                         }
                     }
                 }
-                
                 //右下の入力ページ表示ボタン
                 Button {
                     viewModel.iswritingsheet = true
@@ -57,17 +81,15 @@ struct ContentView: View {
                         .shadow(radius: 3)
                 }
                 .sheet(isPresented: $viewModel.iswritingsheet){
-                    SendMessageView(
-                        post: $viewModel.post,
-                        CoffeeName: $viewModel.CoffeeName,
-                        content: $viewModel.content)
-                        .padding(20)
-                    
+                    SendMessageView(viewModel: viewModel)
+                    .padding(20)
                 }
                 .padding(12)
             }
             .navigationTitle(Text("今日の投稿"))
+    
             .background(Color.brown.opacity(0.5))
+            
         }
     }
 }
