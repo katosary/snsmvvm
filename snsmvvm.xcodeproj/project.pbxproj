@@ -45,6 +45,11 @@
 			path = snsmvvmUITests;
 			sourceTree = "<group>";
 		};
+		FF31B6A92F6CD0E400CBFAF8 /* docs */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = docs;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +80,7 @@
 		7C287E202F4F23C0007D67D4 = {
 			isa = PBXGroup;
 			children = (
+				FF31B6A92F6CD0E400CBFAF8 /* docs */,
 				7C287E2B2F4F23C0007D67D4 /* snsmvvm */,
 				7C287E392F4F23C2007D67D4 /* snsmvvmTests */,
 				7C287E432F4F23C2007D67D4 /* snsmvvmUITests */,
@@ -109,6 +115,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				7C287E2B2F4F23C0007D67D4 /* snsmvvm */,
+				FF31B6A92F6CD0E400CBFAF8 /* docs */,
 			);
 			name = snsmvvm;
 			packageProductDependencies = (
