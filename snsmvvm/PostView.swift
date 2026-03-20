@@ -40,7 +40,7 @@ extension ContentView {
 
     /// 投稿一覧をスクロール表示する領域
     func mainView() -> some View {
-        ScrollView{ // 縦スクロール
+        ScrollView { // 縦スクロール
             LazyVStack{ // 遅延ロードで縦方向に積む
                 ForEach(viewModel.posts) { post in
                     // 個々の投稿カード
@@ -78,9 +78,9 @@ extension ContentView {
             // ユーザー名・作成日・メニュー
             HStack{
                 Text(post.user) // 投稿者
-                    .frame(maxWidth: 150 , alignment: .leading)
+                    .frame(maxWidth: 150, alignment: .leading)
                 Text(post.createdAt,style:.date) // 作成日
-                    .frame(maxWidth: 150 , alignment: .trailing)
+                    .frame(maxWidth: 150, alignment: .trailing)
                 Menu {
                     // 編集メニュー
                     Button {
@@ -106,7 +106,7 @@ extension ContentView {
                 Text("国名：") // ラベル
                 Text(post.coffeeName)
             }
-            .frame(maxWidth: 300,alignment: .leading)
+            .frame(maxWidth: 300, alignment: .leading)
             // 感想本文
             HStack {
                 Text("感想：") // ラベル
@@ -118,7 +118,7 @@ extension ContentView {
         .background(Color.white)
         .cornerRadius(10)
         .sheet(isPresented: $viewModel.isEditSheet) { // 編集シート
-            EditSheetView(viewModel: $viewModel, post:post)
+            EditSheetView(viewModel: $viewModel, post: post)
         }
     }
 }
