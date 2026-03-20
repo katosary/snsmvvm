@@ -118,7 +118,7 @@ extension ContentView {
         .background(Color.white)
         .cornerRadius(10)
         .sheet(isPresented: $viewModel.isEditSheet) { // 編集シート
-            EditSheetView(viewModel: viewModel, post:post)
+            EditSheetView(viewModel: $viewModel, post:post)
         }
     }
 }
