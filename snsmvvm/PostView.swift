@@ -37,7 +37,7 @@ extension ContentView {
             inputButton()
         }
     }
-
+    
     /// 投稿一覧をスクロール表示する領域
     func mainView() -> some View {
         ScrollView { // 縦スクロール
@@ -48,8 +48,14 @@ extension ContentView {
                 }
             }
         }
+        .sheet(isPresented: $viewModel.isEditSheet) {
+            if let targetPost = viewModel.selectedPost {
+                EditSheetView(viewModel: $viewModel, post: targetPost)
+                    .id(targetPost.id)
+            }
+        }
     }
-
+    
     /// 新規投稿用の入力シートを表示するフローティングボタン
     func inputButton() -> some View {
         // タップで入力シートを開く
@@ -66,11 +72,11 @@ extension ContentView {
         }
         .sheet(isPresented: $viewModel.iswritingsheet) { // 新規投稿シート
             SendMessageView(viewModel: viewModel)
-            .padding(20)
+                .padding(20)
         }
         .padding(12) // 画面端からの余白
     }
-
+    
     /// 単一の投稿を表示するカードビュー
     func postView(_ post: Post) -> some View {
         // 投稿カードの内容
@@ -84,6 +90,7 @@ extension ContentView {
                 Menu {
                     // 編集メニュー
                     Button {
+                        viewModel.selectedPost = post
                         // 編集シートを表示
                         viewModel.isEditSheet = true
                     } label: {
@@ -113,13 +120,19 @@ extension ContentView {
                 Text(post.content)
             }
             .frame(maxWidth: 300, alignment: .leading)
+            //　星評価
+            HStack {
+                Text("評価：")
+                ForEach(1...viewModel.maxRating, id: \.self) { number in
+                    viewModel.image(for: number, rating: post.rating)  //rating: post.ratingを入力すると全部解決した
+                        .foregroundColor(number > post.rating ? viewModel.offColor : viewModel.onColor)
+                }
+            }
+            .frame(maxWidth: 300, alignment: .leading)
         }
         .padding(20)
         .background(Color.white)
         .cornerRadius(10)
-        .sheet(isPresented: $viewModel.isEditSheet) { // 編集シート
-            EditSheetView(viewModel: $viewModel, post: post)
-        }
     }
 }
 
@@ -127,4 +140,3 @@ extension ContentView {
 #Preview {
     ContentView()
 }
-

@@ -13,5 +13,6 @@ struct Post: Identifiable {
     var user: String
     var coffeeName: String
     var content: String
+    var rating: Int
     var createdAt: Date
 }
