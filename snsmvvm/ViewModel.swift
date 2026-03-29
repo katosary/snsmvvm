@@ -12,16 +12,20 @@ import Combine
 import SwiftUI
 
 @Observable
-class PostViewModel {
+class ViewModel {
     var posts: [Post] = []//SendMessageViewで入力された内容を保存している配列。　postsはその配列の名前
+    var user: String = ""
     var coffeeName: String = ""
     var content: String = ""
     var inputcoffee: String = ""
     var inputcontent: String = ""
+    var editingUser: String = ""
     var editingCoffee: String = ""
+    var editingFavoCoffee: String = ""
     var editingContent: String = ""
     var iswritingsheet = false
     var isEditSheet: Bool = false
+    var isProfileEditSheet: Bool = false
     var rating: Int = 0
     var maxRating = 5
     var editingRating: Int = 0
@@ -30,6 +34,12 @@ class PostViewModel {
     var offColor = Color.gray
     var onColor = Color.yellow
     var selectedPost: Post?
+    var selectedTab: Int = 0
+    
+    var users: [User] = []
+    var userName: String = ""
+    var favoriteCoffee: String = ""
+    var userNo: Int = 0
     
     //投稿追加
     func addPost() {
@@ -39,7 +49,7 @@ class PostViewModel {
         content = ""
     }
     
-    //編集ボタン
+    //投稿編集ボタン
     func updatePost(targetPost: Post) {
         if let id = posts.firstIndex(where: { $0.id == targetPost.id }) {
             // その場所の内容を、保存しておいた editingText で上書きする
@@ -57,18 +67,41 @@ class PostViewModel {
         self.editingRating = 0
     }
     
-    //削除ボタン
+    //投稿削除ボタン
     func deletePost(targetPost: Post) {
         posts.removeAll {$0.id == targetPost.id }
     }
     
-    //星評価
+    //投稿星評価
     func image(for number: Int, rating: Int) -> Image {
         if number > rating {
             return offImage ?? Image(systemName: "star")
         } else {
             return onImage
         }
+    }
+    
+    //ユーザー情報編集
+    func updateUser(){
+        let newUser = User(
+            userNo: userNo,
+            userName: userName,
+            favoriteCoffee: favoriteCoffee)
+        users.append(newUser)
+        userName = ""
+        favoriteCoffee = ""
+    }
+    
+    //プロフィール数字情報
+    func profileStat(count: String, label: String) -> some View {
+        VStack {
+            Text(count)
+                .font(.headline)
+            Text(label)
+                .font(.caption)
+                .foregroundColor(.gray)
+        }
+        .frame(maxWidth: .infinity) // 均等に並ぶように幅を広げる
     }
 }
 

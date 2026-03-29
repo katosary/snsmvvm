@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct SendMessageView: View {
-    @State var viewModel = PostViewModel() //新規作成(StateObject)       外から受け取る(ObservedObject)
+struct PostSendView: View {
+    @State var viewModel = ViewModel() //新規作成(StateObject)       外から受け取る(ObservedObject)
     
     @Environment(\.dismiss) private var dismiss
     //    @State private var rating: Int = 0
@@ -35,22 +35,20 @@ struct SendMessageView: View {
                     }
                 }
                 .padding(12)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                HStack{
                     Button {
                         viewModel.addPost()
                         viewModel.rating = 0
-                        dismiss()
+                        viewModel.selectedTab = 0
+                        //dismiss()
                     } label: {
                         Text("投稿")
                     }
                     .padding(12)
-                }
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("キャンセル") {
-                        dismiss()
-                    }
+//                    Button("キャンセル") {
+//                        dismiss()
+//                    }
+//                    .padding(12)
                 }
             }
         }

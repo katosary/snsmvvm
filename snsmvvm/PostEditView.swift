@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct EditSheetView: View {
+struct PostEditView: View {
     @Environment(\.dismiss) private var dismiss
-    @Binding var viewModel: PostViewModel
+    @Binding var viewModel: ViewModel
     let post: Post
     
     var body : some View {
